@@ -1,24 +1,30 @@
 class ArticlesController < ApplicationController
-  
+  before_action do validate_user(current_user) 
+    
+  end
 
   def index
+    #validate_user(current_user)
     @articles = Article.all
 
     respond_to do |format|
       format.html
       format.csv { send_data @articles.to_csv}
-    end
+    end 
   end
 
   def show
+    #validate_user(current_user)
     @article = Article.find(params[:id])
   end
 
   def new
+    #validate_user(current_user)
     @article = Article.new
   end
 
   def edit
+    #validate_user(current_user)
     @article = Article.find(params[:id])
   end  
 
@@ -30,7 +36,7 @@ class ArticlesController < ApplicationController
     # Auch so ist es nicht ganz korrekt, wenn auch richtig
     #@article = Article.new(params.require(:article).permit(:title, :text))
     
-    
+    #validate_user(current_user)
     @article = Article.new(article_params)
     
     if @article.save
@@ -41,6 +47,7 @@ class ArticlesController < ApplicationController
   end
 
   def update
+    #validate_user(current_user)
     @article = Article.find(params[:id])
 
     if @article.update(article_params)
@@ -51,6 +58,7 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
+    #validate_user(current_user)
     @article = Article.find(params[:id])
     @article.destroy
 
@@ -60,5 +68,12 @@ class ArticlesController < ApplicationController
   private
     def article_params
       params.require(:article).permit(:title, :text, :file)
+    end
+  
+    def validate_user(user)
+      if user.nil?
+        redirect_to login_path
+        return
+      end
     end
 end

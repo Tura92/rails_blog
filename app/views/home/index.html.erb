@@ -4,5 +4,8 @@ Logged in as <%= current_user.email %>.
 <% else %>
   <%= link_to "Sign Up", signup_path %> or 
   <%= link_to "Log In", login_path %>
-<% end %><p id="notice"><%= notice %></p><h1>Example</h1>
-<p>Lorem ipsum …</p>
+<% end %>
+
+<br>
+
+<%= link_to "Zeige Artikel", articles_path if !current_user.nil? %>
